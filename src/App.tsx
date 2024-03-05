@@ -15,6 +15,7 @@ const App = () => {
 		<>
 			<ThemeProvider theme={theme}>
 				<GlobalStyles />
+				// add react device detect
 				<MobileHeader />
 				<Routes>
 					<Route path="/" element={<FeedbackListPage />} />
