@@ -6,6 +6,8 @@ import { GlobalStyles } from './globalStyles';
 
 import { theme } from './theme';
 
+import { isMobile } from 'react-device-detect';
+
 import MobileHeader from './components/MobileHeader';
 
 import FeedbackListPage from './components/FeedbackListPage';
@@ -16,7 +18,7 @@ const App = () => {
 			<ThemeProvider theme={theme}>
 				<GlobalStyles />
 				// add react device detect
-				<MobileHeader />
+				{isMobile && <MobileHeader />}
 				<Routes>
 					<Route path="/" element={<FeedbackListPage />} />
 					<Route path="*" element={<Navigate to="/" />} />
