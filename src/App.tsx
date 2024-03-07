@@ -6,18 +6,20 @@ import { GlobalStyles } from './globalStyles';
 
 import { theme } from './theme';
 
-import { isMobile } from 'react-device-detect';
+import { useMediaQuery } from 'react-responsive';
 
 import MobileHeader from './components/MobileHeader';
 
 import FeedbackListPage from './components/FeedbackListPage';
 
 const App = () => {
+	const isMobile = useMediaQuery({
+		query: '(max-width: 568px)',
+	});
 	return (
 		<>
 			<ThemeProvider theme={theme}>
 				<GlobalStyles />
-				// add react device detect
 				{isMobile && <MobileHeader />}
 				<Routes>
 					<Route path="/" element={<FeedbackListPage />} />
