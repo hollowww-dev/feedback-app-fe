@@ -6,7 +6,7 @@ import { GlobalStyles } from './globalStyles';
 
 import { theme } from './theme';
 
-import { Container } from './components/Container';
+import Container from './components/Container';
 
 import FeedbackListPage from './components/FeedbackListPage';
 

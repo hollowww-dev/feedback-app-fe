@@ -13,49 +13,50 @@ const StickyContainer = styled.div`
 	left: 0;
 	height: 100vh;
 	width: 100vw;
-	div.headerContainer {
-		z-index: 100;
-		padding: 1em 1.5em;
-		width: 100vw;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+`;
 
-		background: rgb(232, 77, 112);
-		background: linear-gradient(
-			195deg,
-			rgba(232, 77, 112, 1) 0%,
-			rgba(163, 55, 246, 1) 50%,
-			rgba(40, 167, 237, 1) 100%
-		);
-		div.left {
-			h2,
-			p {
-				color: ${({ theme }) => theme.white};
-			}
-			p {
-				opacity: 0.75;
-				text-shadow: ${({ theme }) => theme.paragraph} 2px 2.5px 5px;
-			}
+const HeaderContainer = styled.div`
+	z-index: 100;
+	padding: 1em 1.5em;
+	width: 100vw;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: rgb(232, 77, 112);
+	background: linear-gradient(
+		195deg,
+		rgba(232, 77, 112, 1) 0%,
+		rgba(163, 55, 246, 1) 50%,
+		rgba(40, 167, 237, 1) 100%
+	);
+	div.left {
+		h2,
+		p {
+			color: ${({ theme }) => theme.white};
 		}
-		div.right {
-			svg {
-				cursor: pointer;
-				color: ${({ theme }) => theme.white};
-			}
+		p {
+			opacity: 0.75;
+			text-shadow: ${({ theme }) => theme.paragraph} 2px 2.5px 5px;
 		}
 	}
-	div.sidebarMobile {
-		display: flex;
-		justify-content: flex-end;
-		width: 100vw;
-		height: 100vh;
-		background-color: rgba(0, 0, 0, 0.5);
-		div.content {
-			padding: 1.5em;
-			height: 100%;
-			background-color: ${({ theme }) => theme.bodyBackground};
+	div.right {
+		svg {
+			cursor: pointer;
+			color: ${({ theme }) => theme.white};
 		}
+	}
+`;
+
+const Opened = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	div.content {
+		padding: 1.5em;
+		height: 100%;
+		background-color: ${({ theme }) => theme.bodyBackground};
 	}
 `;
 
@@ -64,7 +65,7 @@ const MobileHeader = () => {
 
 	return (
 		<StickyContainer>
-			<div className="headerContainer">
+			<HeaderContainer>
 				<div className="left">
 					<h2>Frontend Mentor</h2>
 					<p>Feedback Board</p>
@@ -76,13 +77,13 @@ const MobileHeader = () => {
 						<IconHamburger onClick={() => setSidebarOpen(true)} />
 					)}
 				</div>
-			</div>
+			</HeaderContainer>
 			{sidebarOpen && (
-				<div className="sidebarMobile">
+				<Opened>
 					<div className="content">
 						<Sidebar />
 					</div>
-				</div>
+				</Opened>
 			)}
 		</StickyContainer>
 	);

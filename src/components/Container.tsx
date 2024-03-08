@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-export const Container = styled.div`
+const Container = styled.div`
 	flex-direction: column;
 	display: flex;
 	width: calc(100vw - 2em);
@@ -10,3 +10,5 @@ export const Container = styled.div`
 		max-width: calc(1280px - 2em);
 	}
 `;
+
+export default Container;

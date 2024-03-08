@@ -11,7 +11,7 @@ const FeedbackContainer = styled.div`
 	flex-direction: column;
 	gap: 1.5em;
 
-	@media (min-width: ${breakpoints.tablet}) {
+	@media (min-width: ${breakpoints.minDesktop}) {
 		flex-direction: row;
 	}
 `;
@@ -24,17 +24,14 @@ const FeedbackList = styled.div`
 const FeedbackListPage = () => {
 	return (
 		<FeedbackContainer>
-			<MediaQuery maxWidth={breakpoints.mobile}>
+			<MediaQuery maxWidth={breakpoints.maxMobile}>
 				<MobileHeader />
 			</MediaQuery>
-			<MediaQuery minWidth={breakpoints.mobile}>
+			<MediaQuery minWidth={breakpoints.minTablet}>
 				<Sidebar />
 			</MediaQuery>
 			<FeedbackList>
 				<h1>Hello</h1>
-				<h2>Hello</h2>
-				<h3>Hello</h3>
-				<h4>Hello</h4>
 			</FeedbackList>
 		</FeedbackContainer>
 	);

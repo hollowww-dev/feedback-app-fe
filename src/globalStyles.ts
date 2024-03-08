@@ -31,7 +31,7 @@ body {
         font-weight: 400;
     }
 
-    @media (min-width: 1280) {
+    @media (min-width: 960) {
         font-size: 1.6rem;
         line-height: 2.3rem;
     }
