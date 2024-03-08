@@ -16,15 +16,20 @@ const SidebarContainer = styled.div`
 	}
 	@media (min-width: ${breakpoints.tablet}) {
 		flex-direction: column;
-		width: 25%;
 	}
 	div.bracket {
 		display: flex;
-		flex-wrap: wrap;
 		padding: 2em 1.5em;
 		width: 100%;
 		border-radius: 10px;
 		background-color: ${({ theme }) => theme.white};
+		max-width: 225px;
+		@media (min-width: ${breakpoints.mobile}) {
+			max-width: 100%;
+		}
+		@media (min-width: ${breakpoints.tablet}) {
+			max-width: 255px;
+		}
 		&.title {
 			display: flex;
 			align-items: flex-end;
@@ -50,6 +55,8 @@ const SidebarContainer = styled.div`
 			}
 		}
 		&.categories {
+			align-items: flex-start;
+			flex-wrap: wrap;
 			gap: 0.8em;
 			@media (min-width: ${breakpoints.tablet}) {
 				gap: 1em;
@@ -67,7 +74,6 @@ const SidebarContainer = styled.div`
 			div.feedbacks {
 				display: flex;
 				flex-direction: column;
-				font-size: 1.6rem;
 				gap: 0.75em;
 				div {
 					display: flex;
@@ -78,6 +84,7 @@ const SidebarContainer = styled.div`
 						align-items: center;
 						position: relative;
 						font-weight: 400;
+						font-size: 1.6rem;
 						&::before {
 							margin-right: 1em;
 							width: 0.35em;

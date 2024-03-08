@@ -23,22 +23,20 @@ const FeedbackList = styled.div`
 
 const FeedbackListPage = () => {
 	return (
-		<>
+		<FeedbackContainer>
 			<MediaQuery maxWidth={breakpoints.mobile}>
 				<MobileHeader />
 			</MediaQuery>
 			<MediaQuery minWidth={breakpoints.mobile}>
-				<FeedbackContainer>
-					<Sidebar />
-					<FeedbackList>
-						<h1>Hello</h1>
-						<h2>Hello</h2>
-						<h3>Hello</h3>
-						<h4>Hello</h4>
-					</FeedbackList>
-				</FeedbackContainer>
+				<Sidebar />
 			</MediaQuery>
-		</>
+			<FeedbackList>
+				<h1>Hello</h1>
+				<h2>Hello</h2>
+				<h3>Hello</h3>
+				<h4>Hello</h4>
+			</FeedbackList>
+		</FeedbackContainer>
 	);
 };
 

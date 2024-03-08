@@ -53,7 +53,6 @@ const StickyContainer = styled.div`
 		background-color: rgba(0, 0, 0, 0.5);
 		div.content {
 			padding: 1.5em;
-			width: 75%;
 			height: 100%;
 			background-color: ${({ theme }) => theme.bodyBackground};
 		}

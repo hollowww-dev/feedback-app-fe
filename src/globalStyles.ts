@@ -63,6 +63,7 @@ h4 {
 }
 
 a, a:visited {
+    font-size: 1.3rem;
     color: ${({ theme }) => theme.secondary};
 }
 
