@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { styled } from 'styled-components';
 
-import IconHamburger from '../assets/shared/mobile/icon-hamburger.svg?react';
-import IconClose from '../assets/shared/mobile/icon-close.svg?react';
+import IconHamburger from '../../assets/shared/mobile/icon-hamburger.svg?react';
+import IconClose from '../../assets/shared/mobile/icon-close.svg?react';
 
 import Sidebar from './Sidebar';
 
@@ -35,6 +35,7 @@ const StickyContainer = styled.div`
 			}
 			p {
 				opacity: 0.75;
+				text-shadow: ${({ theme }) => theme.paragraph} 2px 2.5px 5px;
 			}
 		}
 		div.right {
@@ -52,7 +53,7 @@ const StickyContainer = styled.div`
 		background-color: rgba(0, 0, 0, 0.5);
 		div.content {
 			padding: 1.5em;
-			width: 80%;
+			width: 75%;
 			height: 100%;
 			background-color: ${({ theme }) => theme.bodyBackground};
 		}

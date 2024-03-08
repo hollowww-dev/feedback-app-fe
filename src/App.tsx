@@ -6,10 +6,7 @@ import { GlobalStyles } from './globalStyles';
 
 import { theme } from './theme';
 
-import MediaQuery from 'react-responsive';
-import breakpoints from './utils/breakpoints';
-
-import MobileHeader from './components/MobileHeader';
+import { Container } from './components/Container';
 
 import FeedbackListPage from './components/FeedbackListPage';
 
@@ -18,11 +15,15 @@ const App = () => {
 		<>
 			<ThemeProvider theme={theme}>
 				<GlobalStyles />
-				<MediaQuery maxWidth={breakpoints.mobile}>
-					<MobileHeader />
-				</MediaQuery>
 				<Routes>
-					<Route path="/" element={<FeedbackListPage />} />
+					<Route
+						path="/"
+						element={
+							<Container>
+								<FeedbackListPage />
+							</Container>
+						}
+					/>
 					<Route path="*" element={<Navigate to="/" />} />
 				</Routes>
 			</ThemeProvider>

@@ -9,5 +9,5 @@ export const theme = {
 	secondary: '#4661E6',
 	errorBackground: '#D73737',
 	planned: '#F49F85',
-	inLive: '#62BCFA',
+	live: '#62BCFA',
 };

@@ -25,13 +25,13 @@ body {
     line-height: 1.9rem;
     font-weight: 600;
 
-    @media (min-width: 756px) {
+    @media (min-width: 768px) {
         font-size: 1.5rem;
         line-height: 2.2rem;
         font-weight: 400;
     }
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1280) {
         font-size: 1.6rem;
         line-height: 2.3rem;
     }
@@ -60,6 +60,10 @@ h4 {
     font-size: 1.4rem;
     line-height: 2rem;
     letter-spacing: -.02rem;
+}
+
+a, a:visited {
+    color: ${({ theme }) => theme.secondary};
 }
 
 button {
