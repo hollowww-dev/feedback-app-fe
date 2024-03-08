@@ -6,21 +6,21 @@ import { GlobalStyles } from './globalStyles';
 
 import { theme } from './theme';
 
-import { useMediaQuery } from 'react-responsive';
+import MediaQuery from 'react-responsive';
+import breakpoints from './utils/breakpoints';
 
 import MobileHeader from './components/MobileHeader';
 
 import FeedbackListPage from './components/FeedbackListPage';
 
 const App = () => {
-	const isMobile = useMediaQuery({
-		query: '(max-width: 568px)',
-	});
 	return (
 		<>
 			<ThemeProvider theme={theme}>
 				<GlobalStyles />
-				{isMobile && <MobileHeader />}
+				<MediaQuery maxWidth={breakpoints.mobile}>
+					<MobileHeader />
+				</MediaQuery>
 				<Routes>
 					<Route path="/" element={<FeedbackListPage />} />
 					<Route path="*" element={<Navigate to="/" />} />
