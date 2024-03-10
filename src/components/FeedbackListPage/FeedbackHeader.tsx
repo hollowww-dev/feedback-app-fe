@@ -6,6 +6,7 @@ import MediaQuery from 'react-responsive';
 import breakpoints from '../../utils/breakpoints';
 
 import IconSuggestions from '../../assets/suggestions/icon-suggestions.svg?react';
+import IconPlus from '../../assets/shared/icon-plus.svg?react';
 
 const HeaderContainer = styled.div`
 	padding: 0.8em 1.5em;
@@ -45,7 +46,10 @@ const FeedbackHeader = ({ suggestionsLength }: { suggestionsLength?: number }) =
 				<span className="sortBy">Sort by:</span>
 			</div>
 			<div>
-				<ButtonPrimary>Add Feedback</ButtonPrimary>
+				<ButtonPrimary>
+					<IconPlus />
+					Add Feedback
+				</ButtonPrimary>
 			</div>
 		</HeaderContainer>
 	);

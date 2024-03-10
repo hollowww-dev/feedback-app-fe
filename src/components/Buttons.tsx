@@ -2,6 +2,9 @@ import { styled } from 'styled-components';
 
 export const ButtonPrimary = styled.button`
 	padding: 0.9em 1.75em;
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
 	border-radius: 10px;
 	background-color: ${({ theme }) => theme.primary};
 	font-size: 1.3rem;
