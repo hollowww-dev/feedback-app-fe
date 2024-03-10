@@ -5,13 +5,13 @@ import { styled } from 'styled-components';
 import IconHamburger from '../../assets/shared/mobile/icon-hamburger.svg?react';
 import IconClose from '../../assets/shared/mobile/icon-close.svg?react';
 
+import FeedbackHeader from './FeedbackHeader';
 import Sidebar from './Sidebar';
 
 const StickyContainer = styled.div`
-	position: fixed;
+	position: sticky;
 	top: 0;
 	left: 0;
-	height: 100vh;
 	width: 100vw;
 `;
 
@@ -48,6 +48,8 @@ const HeaderContainer = styled.div`
 `;
 
 const Opened = styled.div`
+	position: fixed;
+	right: 0;
 	display: flex;
 	justify-content: flex-end;
 	width: 100vw;
@@ -78,6 +80,7 @@ const MobileHeader = () => {
 					)}
 				</div>
 			</HeaderContainer>
+			<FeedbackHeader />
 			{sidebarOpen && (
 				<Opened>
 					<div className="content">

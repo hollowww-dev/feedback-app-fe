@@ -15,7 +15,6 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     min-height: 100vh;
     background-color: ${({ theme }) => theme.bodyBackground};

@@ -6,6 +6,7 @@ export const theme = {
 	paragraph: '#647196',
 	headline: '#3A4374',
 	primary: '#AD1FEA',
+	primaryHover: '#C75AF6',
 	secondary: '#4661E6',
 	errorBackground: '#D73737',
 	planned: '#F49F85',
