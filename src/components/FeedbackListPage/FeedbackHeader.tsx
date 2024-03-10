@@ -31,17 +31,13 @@ const HeaderContainer = styled.div`
 	}
 `;
 
-const FeedbackHeader = ({ suggestionsLength }: { suggestionsLength?: number }) => {
+const FeedbackHeader = ({ suggestions }: { suggestions?: number }) => {
 	return (
 		<HeaderContainer>
 			<div className="left">
 				<MediaQuery minWidth={breakpoints.minTablet}>
-					{suggestionsLength && (
-						<>
-							<IconSuggestions />
-							<h3>{suggestionsLength} Suggestions</h3>
-						</>
-					)}
+					<IconSuggestions />
+					<h3>{suggestions} Suggestions</h3>
 				</MediaQuery>
 				<span className="sortBy">Sort by:</span>
 			</div>

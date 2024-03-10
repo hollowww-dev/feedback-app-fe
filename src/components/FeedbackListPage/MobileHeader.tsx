@@ -56,13 +56,21 @@ const Opened = styled.div`
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.5);
 	div.content {
-		padding: 1.5em;
+		padding: 0.75em 1.5em;
 		height: 100%;
 		background-color: ${({ theme }) => theme.bodyBackground};
 	}
 `;
 
-const MobileHeader = () => {
+const MobileHeader = ({
+	planned,
+	inprogress,
+	live,
+}: {
+	planned: number;
+	inprogress: number;
+	live: number;
+}) => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	return (
@@ -80,14 +88,14 @@ const MobileHeader = () => {
 					)}
 				</div>
 			</HeaderContainer>
-			<FeedbackHeader />
 			{sidebarOpen && (
 				<Opened>
 					<div className="content">
-						<Sidebar />
+						<Sidebar planned={planned} inprogress={inprogress} live={live} />
 					</div>
 				</Opened>
 			)}
+			<FeedbackHeader />
 		</StickyContainer>
 	);
 };

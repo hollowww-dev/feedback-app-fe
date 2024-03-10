@@ -1,3 +1,5 @@
+import { Category } from '../../types';
+
 import { styled } from 'styled-components';
 
 import { ButtonCategory } from '../Buttons';
@@ -16,6 +18,7 @@ const SidebarContainer = styled.div`
 	}
 	@media (min-width: ${breakpoints.minDesktop}) {
 		flex-direction: column;
+		flex-shrink: 0;
 	}
 `;
 
@@ -31,7 +34,7 @@ const Bracket = styled.div`
 		padding: 1.5em 1.5em;
 	}
 	@media (min-width: ${breakpoints.minDesktop}) {
-		max-width: 255px;
+		max-width: 245px;
 	}
 `;
 
@@ -62,10 +65,7 @@ const Title = styled(Bracket)`
 const Categories = styled(Bracket)`
 	align-items: flex-start;
 	flex-wrap: wrap;
-	gap: 0.8em;
-	@media (min-width: ${breakpoints.minDesktop}) {
-		gap: 1em;
-	}
+	gap: 0.75em;
 `;
 
 const Roadmap = styled(Bracket)`
@@ -120,7 +120,15 @@ const Roadmap = styled(Bracket)`
 	}
 `;
 
-const Sidebar = () => {
+const Sidebar = ({
+	planned,
+	inprogress,
+	live,
+}: {
+	planned: number;
+	inprogress: number;
+	live: number;
+}) => {
 	return (
 		<SidebarContainer>
 			<MediaQuery minWidth={breakpoints.minTablet}>
@@ -133,11 +141,9 @@ const Sidebar = () => {
 			</MediaQuery>
 			<Categories>
 				<ButtonCategory>All</ButtonCategory>
-				<ButtonCategory>UI</ButtonCategory>
-				<ButtonCategory>UX</ButtonCategory>
-				<ButtonCategory>Enhancement</ButtonCategory>
-				<ButtonCategory>Bug</ButtonCategory>
-				<ButtonCategory>Feature</ButtonCategory>
+				{Object.keys(Category).map(category => {
+					return <ButtonCategory key={category}>{category}</ButtonCategory>;
+				})}
 			</Categories>
 			<Roadmap>
 				<div className="top">
@@ -146,13 +152,15 @@ const Sidebar = () => {
 				</div>
 				<div className="feedbacks">
 					<div>
-						<span className="planned">Planned</span> <span className="number">2</span>
+						<span className="planned">Planned</span>
+						<span className="number">{planned}</span>
 					</div>
 					<div>
-						<span className="inProgress">In-Progress</span> <span className="number">3</span>
+						<span className="inProgress">In-Progress</span>
+						<span className="number">{inprogress}</span>
 					</div>
 					<div>
-						<span className="live">Live</span> <span className="number">1</span>
+						<span className="live">Live</span> <span className="number">{live}</span>
 					</div>
 				</div>
 			</Roadmap>

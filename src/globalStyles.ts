@@ -22,7 +22,7 @@ body {
     font-family: "Jost", sans-serif;
     font-size: 1.3rem;
     line-height: 1.9rem;
-    font-weight: 600;
+    font-weight: 400;
 
     @media (min-width: 768px) {
         font-size: 1.5rem;

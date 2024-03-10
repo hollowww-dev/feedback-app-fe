@@ -4,6 +4,10 @@ import { Entry } from '../../types';
 
 import feedbackService from '../../services/feedbackService';
 
+import axios from 'axios';
+
+import _ from 'lodash';
+
 import { styled } from 'styled-components';
 
 import MediaQuery from 'react-responsive';
@@ -13,6 +17,7 @@ import Container from '../Container';
 import MobileHeader from './MobileHeader';
 import Sidebar from './Sidebar';
 import FeedbackHeader from './FeedbackHeader';
+import { ButtonCategory } from '../Buttons';
 
 const FeedbackContainer = styled.div`
 	display: flex;
@@ -28,35 +33,90 @@ const FeedbackList = styled.div`
 	width: 100%;
 	display: flex;
 	flex-direction: column;
+	gap: 1em;
 `;
+
+const FeedbackSingle = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1em;
+	padding: 1.5em 1.5em;
+	border-radius: 10px;
+	background-color: ${({ theme }) => theme.white};
+`;
+
+const FeedbackEntry = ({ entry }: { entry: Entry }) => {
+	return (
+		<FeedbackSingle>
+			<h3>{entry.title}</h3>
+			<p>{entry.description}</p>
+			<ButtonCategory>{entry.category}</ButtonCategory>
+		</FeedbackSingle>
+	);
+};
 
 const FeedbackListPage = () => {
 	const [feedback, setFeedback] = useState<Entry[]>();
+	const [error, setError] = useState<string>();
 
 	useEffect(() => {
 		const fetchFeedback = async () => {
 			const feedback = await feedbackService.getAll();
 			setFeedback(feedback);
 		};
-		void fetchFeedback();
+		void fetchFeedback().catch((error: unknown) => {
+			if (axios.isAxiosError(error)) {
+				if (error?.response?.data && typeof error?.response?.data === 'string') {
+					setError(error.response.data);
+				} else {
+					setError('Unrecognized axios error');
+				}
+			} else {
+				console.error('Unknown error', error);
+				setError('Unknown error');
+			}
+		});
 	}, []);
 
-	console.log(feedback);
+	if (error) {
+		return (
+			<Container>
+				<p>{error}</p>
+			</Container>
+		);
+	}
+
+	if (!feedback) {
+		return (
+			<Container>
+				<p>Fetching feedback...</p>
+			</Container>
+		);
+	}
+
+	const planned = _.countBy(feedback, a => a.status === 'planned').true;
+	const inprogress = _.countBy(feedback, a => a.status === 'inprogress').true;
+	const live = _.countBy(feedback, a => a.status === 'live').true;
+	const suggestions = _.countBy(feedback, a => a.status === 'suggestion').true;
+
 	return (
 		<>
 			<MediaQuery maxWidth={breakpoints.maxMobile}>
-				<MobileHeader />
+				<MobileHeader planned={planned} inprogress={inprogress} live={live} />
 			</MediaQuery>
 			<Container>
 				<FeedbackContainer>
 					<MediaQuery minWidth={breakpoints.minTablet}>
-						<Sidebar />
+						<Sidebar planned={planned} inprogress={inprogress} live={live} />
 					</MediaQuery>
 					<FeedbackList>
 						<MediaQuery minWidth={breakpoints.minTablet}>
-							<FeedbackHeader suggestionsLength={Number(2)} />
+							<FeedbackHeader suggestions={suggestions} />
 						</MediaQuery>
-						<h1>Hello</h1>
+						{feedback.map(entry => {
+							return <FeedbackEntry entry={entry} />;
+						})}
 					</FeedbackList>
 				</FeedbackContainer>
 			</Container>
