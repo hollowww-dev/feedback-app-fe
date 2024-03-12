@@ -95,27 +95,32 @@ const FeedbackListPage = () => {
 		);
 	}
 
-	const planned = _.countBy(feedback, a => a.status === 'planned').true;
-	const inprogress = _.countBy(feedback, a => a.status === 'inprogress').true;
-	const live = _.countBy(feedback, a => a.status === 'live').true;
-	const suggestions = _.countBy(feedback, a => a.status === 'suggestion').true;
+	const countWithStatus = _.countBy(_.flatMap(feedback), 'status');
 
 	return (
 		<>
 			<MediaQuery maxWidth={breakpoints.maxMobile}>
-				<MobileHeader planned={planned} inprogress={inprogress} live={live} />
+				<MobileHeader
+					planned={countWithStatus.planned}
+					inprogress={countWithStatus.inprogress}
+					live={countWithStatus.live}
+				/>
 			</MediaQuery>
 			<Container>
 				<FeedbackContainer>
 					<MediaQuery minWidth={breakpoints.minTablet}>
-						<Sidebar planned={planned} inprogress={inprogress} live={live} />
+						<Sidebar
+							planned={countWithStatus.planned}
+							inprogress={countWithStatus.inprogress}
+							live={countWithStatus.live}
+						/>
 					</MediaQuery>
 					<FeedbackList>
 						<MediaQuery minWidth={breakpoints.minTablet}>
-							<FeedbackHeader suggestions={suggestions} />
+							<FeedbackHeader suggestions={countWithStatus.suggestions} />
 						</MediaQuery>
 						{feedback.map(entry => {
-							return <FeedbackEntry entry={entry} />;
+							return <FeedbackEntry entry={entry} key={entry.title} />;
 						})}
 					</FeedbackList>
 				</FeedbackContainer>
