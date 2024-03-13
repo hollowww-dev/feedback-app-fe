@@ -6,25 +6,27 @@ import feedbackService from '../../services/feedbackService';
 
 import axios from 'axios';
 
-import _ from 'lodash';
+// import _ from 'lodash';
+
+import Board from './Board';
 
 import { styled } from 'styled-components';
 
-import MediaQuery from 'react-responsive';
-import breakpoints from '../../utils/breakpoints';
-
-import Container from '../Container';
-import MobileHeader from './MobileHeader';
-import Sidebar from './Sidebar';
-import FeedbackHeader from './FeedbackHeader';
 import { ButtonCategory } from '../Buttons';
 
-const FeedbackContainer = styled.div`
+import breakpoints from '../../utils/breakpoints';
+
+const FeedbackPageContainer = styled.div`
+	width: 100vw;
+	margin: auto;
 	display: flex;
 	flex-direction: column;
-	gap: 1.5em;
-
-	@media (min-width: ${breakpoints.minDesktop}) {
+	@media (min-width: ${breakpoints.tablet}) {
+		padding: 1em 1em;
+		gap: 1em;
+	}
+	@media (min-width: ${breakpoints.desktop}) {
+		max-width: 1220px;
 		flex-direction: row;
 	}
 `;
@@ -34,6 +36,16 @@ const FeedbackList = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 1em;
+	.list {
+		padding: 1em 1em;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+		@media (min-width: ${breakpoints.tablet}) {
+			padding: 0;
+		}
+	}
 `;
 
 const FeedbackSingle = styled.div`
@@ -80,52 +92,24 @@ const FeedbackListPage = () => {
 	}, []);
 
 	if (error) {
-		return (
-			<Container>
-				<p>{error}</p>
-			</Container>
-		);
+		return <p>{error}</p>;
 	}
 
 	if (!feedback) {
-		return (
-			<Container>
-				<p>Fetching feedback...</p>
-			</Container>
-		);
+		return <p>Fetching feedback...</p>;
 	}
 
-	const countWithStatus = _.countBy(_.flatMap(feedback), 'status');
-
 	return (
-		<>
-			<MediaQuery maxWidth={breakpoints.maxMobile}>
-				<MobileHeader
-					planned={countWithStatus.planned}
-					inprogress={countWithStatus.inprogress}
-					live={countWithStatus.live}
-				/>
-			</MediaQuery>
-			<Container>
-				<FeedbackContainer>
-					<MediaQuery minWidth={breakpoints.minTablet}>
-						<Sidebar
-							planned={countWithStatus.planned}
-							inprogress={countWithStatus.inprogress}
-							live={countWithStatus.live}
-						/>
-					</MediaQuery>
-					<FeedbackList>
-						<MediaQuery minWidth={breakpoints.minTablet}>
-							<FeedbackHeader suggestions={countWithStatus.suggestions} />
-						</MediaQuery>
-						{feedback.map(entry => {
-							return <FeedbackEntry entry={entry} key={entry.title} />;
-						})}
-					</FeedbackList>
-				</FeedbackContainer>
-			</Container>
-		</>
+		<FeedbackPageContainer>
+			<Board />
+			<FeedbackList>
+				<div className="list">
+					{feedback.map((entry: Entry) => (
+						<FeedbackEntry entry={entry} key={entry.title} />
+					))}
+				</div>
+			</FeedbackList>
+		</FeedbackPageContainer>
 	);
 };
 

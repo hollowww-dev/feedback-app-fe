@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
+import breakpoints from './utils/breakpoints';
+
 export const GlobalStyles = createGlobalStyle`
 * {
     margin: 0;
@@ -16,7 +18,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
     background-color: ${({ theme }) => theme.bodyBackground};
     color: ${({ theme }) => theme.paragraph};
     font-family: "Jost", sans-serif;
@@ -24,37 +25,41 @@ body {
     line-height: 1.9rem;
     font-weight: 400;
 
-    @media (min-width: 768px) {
+    @media (${breakpoints.minTablet}) {
         font-size: 1.5rem;
         line-height: 2.2rem;
         font-weight: 400;
     }
 
-    @media (min-width: 960) {
+    @media (${breakpoints.minDesktop}) {
         font-size: 1.6rem;
         line-height: 2.3rem;
     }
 }
 
 
-h1, h2, h3, h4 {
+h1, h3, h4 {
     color: ${({ theme }) => theme.headline};
 }
+
 h1 {
     font-size: 2.4rem;
     line-height: 3.5rem;
     letter-spacing: -.033rem;
 }
+
 h2 {
     font-size: 2rem;
     line-height: 2.9rem;
     letter-spacing: -.025rem;
 }
+
 h3 {
     font-size: 1.8rem;
     line-height: 2.6rem;
     letter-spacing: -.025rem;
 }
+
 h4 {
     font-size: 1.4rem;
     line-height: 2rem;
