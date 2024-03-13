@@ -25,13 +25,13 @@ body {
     line-height: 1.9rem;
     font-weight: 400;
 
-    @media (${breakpoints.minTablet}) {
+    @media (min-width: ${breakpoints.tablet}) {
         font-size: 1.5rem;
         line-height: 2.2rem;
         font-weight: 400;
     }
 
-    @media (${breakpoints.minDesktop}) {
+    @media (min-width: ${breakpoints.desktop}) {
         font-size: 1.6rem;
         line-height: 2.3rem;
     }

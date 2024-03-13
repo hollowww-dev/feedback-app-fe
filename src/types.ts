@@ -40,3 +40,12 @@ export interface Entry {
 	description: string;
 	comments?: Comment[];
 }
+
+export type Count = {
+	planned: number,
+	inprogress: number,
+	live: number,
+	suggestion: number
+}
+
+export type RoadmapCount = Omit<Count, 'suggestion'>

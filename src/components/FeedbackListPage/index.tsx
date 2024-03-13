@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
 
-import { Entry } from '../../types';
+import { Entry, RoadmapCount } from '../../types';
 
 import feedbackService from '../../services/feedbackService';
 
 import axios from 'axios';
 
-// import _ from 'lodash';
+import _ from 'lodash';
 
 import Board from './Board';
+import FeedbackEntry from './FeedbackEntry';
 
 import { styled } from 'styled-components';
-
-import { ButtonCategory } from '../Buttons';
 
 import breakpoints from '../../utils/breakpoints';
 
@@ -48,26 +47,6 @@ const FeedbackList = styled.div`
 	}
 `;
 
-const FeedbackSingle = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 1em;
-	padding: 1.5em 1.5em;
-	border-radius: 10px;
-	background-color: ${({ theme }) => theme.white};
-`;
-
-const FeedbackEntry = ({ entry }: { entry: Entry }) => {
-	return (
-		<FeedbackSingle>
-			<h3>{entry.title}</h3>
-			<p>{entry.description}</p>
-			<ButtonCategory>{entry.category}</ButtonCategory>
-		</FeedbackSingle>
-	);
-};
-
 const FeedbackListPage = () => {
 	const [feedback, setFeedback] = useState<Entry[]>();
 	const [error, setError] = useState<string>();
@@ -90,7 +69,6 @@ const FeedbackListPage = () => {
 			}
 		});
 	}, []);
-
 	if (error) {
 		return <p>{error}</p>;
 	}
@@ -99,13 +77,20 @@ const FeedbackListPage = () => {
 		return <p>Fetching feedback...</p>;
 	}
 
+	const count = _.countBy(_.flatMap(feedback, 'status'));
+	const roadmapCount: RoadmapCount = {
+		planned: count.planned,
+		inprogress: count.inprogress,
+		live: count.live,
+	};
+
 	return (
 		<FeedbackPageContainer>
-			<Board />
+			<Board roadmapCount={roadmapCount} />
 			<FeedbackList>
 				<div className="list">
 					{feedback.map((entry: Entry) => (
-						<FeedbackEntry entry={entry} key={entry.title} />
+						<FeedbackEntry entry={entry} key={entry.id} />
 					))}
 				</div>
 			</FeedbackList>
