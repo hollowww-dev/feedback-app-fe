@@ -57,7 +57,11 @@ const Roadmap = styled(Bracket)`
 	}
 `;
 
-const RoadmapBoard = ({ roadmapCount }: { roadmapCount: RoadmapCount }) => {
+const RoadmapBoard = ({
+	roadmapCount,
+}: {
+	roadmapCount: RoadmapCount;
+}) => {
 	return (
 		<Roadmap>
 			<div className="top">

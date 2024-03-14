@@ -64,7 +64,6 @@ const TitleBoardStyled = styled.div`
 
 const TitleBoard = ({ children }: { children?: string | JSX.Element | JSX.Element[] }) => {
 	const [isOpen, setIsOpen] = useState(false);
-
 	return (
 		<>
 			<TitleBoardStyled>

@@ -42,10 +42,12 @@ export interface Entry {
 }
 
 export type Count = {
-	planned: number,
-	inprogress: number,
-	live: number,
-	suggestion: number
-}
+	planned: number;
+	inprogress: number;
+	live: number;
+	suggestion: number;
+};
 
-export type RoadmapCount = Omit<Count, 'suggestion'>
+export type Filter = Category | 'all';
+
+export type RoadmapCount = Omit<Count, 'suggestion'>;

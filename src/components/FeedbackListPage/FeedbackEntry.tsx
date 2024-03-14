@@ -1,8 +1,9 @@
-import { Entry, Category } from '../../types';
+import { Entry } from '../../types';
 
 import { styled } from 'styled-components';
 
 import { ButtonCategory } from '../Buttons';
+import { findCategoryKey } from '../../utils/utils';
 
 const FeedbackSingle = styled.div`
 	display: flex;
@@ -14,14 +15,24 @@ const FeedbackSingle = styled.div`
 	background-color: ${({ theme }) => theme.white};
 `;
 
-const FeedbackEntry = ({ entry }: { entry: Entry }) => {
-	const category = Object.entries(Category).find(a => a[1] === entry.category);
+const FeedbackEntry = ({
+	entry,
+	updateFilter,
+}: {
+	entry: Entry;
+	updateFilter: (category: string) => void;
+}) => {
+	const categoryKey = findCategoryKey(entry.category);
 
 	return (
 		<FeedbackSingle>
 			<h3>{entry.title}</h3>
 			<p>{entry.description}</p>
-			<ButtonCategory>{category ? category[0] : 'Undefined'}</ButtonCategory>
+			{categoryKey ? (
+				<ButtonCategory onClick={() => updateFilter(categoryKey)}>{categoryKey}</ButtonCategory>
+			) : (
+				<ButtonCategory>Undefined</ButtonCategory>
+			)}
 		</FeedbackSingle>
 	);
 };

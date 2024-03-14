@@ -1,4 +1,4 @@
-import { RoadmapCount } from '../../../types';
+import { RoadmapCount, Filter } from '../../../types';
 
 import { styled } from 'styled-components';
 
@@ -22,7 +22,15 @@ const BoardContainer = styled.div`
 	}
 `;
 
-const Board = ({ roadmapCount }: { roadmapCount: RoadmapCount }) => {
+const Board = ({
+	roadmapCount,
+	filter,
+	updateFilter,
+}: {
+	roadmapCount: RoadmapCount;
+	filter: Filter;
+	updateFilter: (category: string) => void;
+}) => {
 	const isMobile = useMediaQuery({
 		query: `(max-width: ${breakpoints.mobile})`,
 	});
@@ -30,13 +38,13 @@ const Board = ({ roadmapCount }: { roadmapCount: RoadmapCount }) => {
 		<BoardContainer>
 			{isMobile ? (
 				<TitleBoard>
-					<CategoriesBoard />
+					<CategoriesBoard filter={filter} updateFilter={updateFilter} />
 					<RoadmapBoard roadmapCount={roadmapCount} />
 				</TitleBoard>
 			) : (
 				<>
 					<TitleBoard />
-					<CategoriesBoard />
+					<CategoriesBoard filter={filter} updateFilter={updateFilter} />
 					<RoadmapBoard roadmapCount={roadmapCount} />
 				</>
 			)}

@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { Entry, RoadmapCount, Filter } from '../../types';
 
-import { Entry, RoadmapCount } from '../../types';
+import { isCategory, findCategoryValue } from '../../utils/utils';
+
+import { useState, useEffect } from 'react';
+
+import { useQuery } from 'react-query';
 
 import feedbackService from '../../services/feedbackService';
-
-import axios from 'axios';
 
 import _ from 'lodash';
 
@@ -13,11 +15,16 @@ import FeedbackEntry from './FeedbackEntry';
 
 import { styled } from 'styled-components';
 
+import MediaQuery from 'react-responsive';
 import breakpoints from '../../utils/breakpoints';
+
+import { ButtonPrimary } from '../Buttons';
+
+import IconSuggestions from '../../assets/suggestions/icon-suggestions.svg?react';
+import IconPlus from '../../assets//shared/icon-plus.svg?react';
 
 const FeedbackPageContainer = styled.div`
 	width: 100vw;
-	margin: auto;
 	display: flex;
 	flex-direction: column;
 	@media (min-width: ${breakpoints.tablet}) {
@@ -25,8 +32,11 @@ const FeedbackPageContainer = styled.div`
 		gap: 1em;
 	}
 	@media (min-width: ${breakpoints.desktop}) {
-		max-width: 1220px;
 		flex-direction: row;
+	}
+
+	@media (min-width: ${breakpoints.bigDesktop}) {
+		max-width: ${breakpoints.bigDesktop};
 	}
 `;
 
@@ -35,9 +45,8 @@ const FeedbackList = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 1em;
-	.list {
+	.entries {
 		padding: 1em 1em;
-		width: 100%;
 		display: flex;
 		flex-direction: column;
 		gap: 1em;
@@ -47,52 +56,139 @@ const FeedbackList = styled.div`
 	}
 `;
 
+const FeedbackListHeader = styled.div`
+	padding: 1em 1em;
+	display: flex;
+	justify-content: space-between;
+	background-color: ${({ theme }) => theme.headerBackground};
+	@media (min-width: ${breakpoints.tablet}) {
+		border-radius: 10px;
+	}
+	.left {
+		display: flex;
+		align-items: center;
+		gap: 4em;
+		color: ${({ theme }) => theme.white};
+		svg {
+			margin: 0 0.5em;
+		}
+		h2 {
+			display: flex;
+			align-items: center;
+			gap: 0.75em;
+		}
+		.sortBy {
+			display: flex;
+			align-items: center;
+		}
+	}
+`;
+
 const FeedbackListPage = () => {
-	const [feedback, setFeedback] = useState<Entry[]>();
-	const [error, setError] = useState<string>();
+	const {
+		data: feedback,
+		isLoading,
+		isIdle,
+		isError,
+		error,
+	} = useQuery<Entry[], Error>('feedback', feedbackService.getAll);
+	const [suggestions, setSuggestions] = useState<Entry[]>();
+	const [filter, setFilter] = useState<Filter>('all');
+	const [roadmapCount, setRoadmapCount] = useState<RoadmapCount>({
+		planned: 0,
+		inprogress: 0,
+		live: 0,
+	});
+	const [suggestionsCount, setSuggestionsCount] = useState<number>(0);
 
 	useEffect(() => {
-		const fetchFeedback = async () => {
-			const feedback = await feedbackService.getAll();
-			setFeedback(feedback);
-		};
-		void fetchFeedback().catch((error: unknown) => {
-			if (axios.isAxiosError(error)) {
-				if (error?.response?.data && typeof error?.response?.data === 'string') {
-					setError(error.response.data);
-				} else {
-					setError('Unrecognized axios error');
-				}
-			} else {
-				console.error('Unknown error', error);
-				setError('Unknown error');
-			}
-		});
-	}, []);
-	if (error) {
-		return <p>{error}</p>;
-	}
+		if (feedback) {
+			const suggestions = feedback.filter(entry => entry.status === 'suggestion');
+			filter !== 'all'
+				? setSuggestions(suggestions.filter(entry => entry.category === filter))
+				: setSuggestions(suggestions);
 
-	if (!feedback) {
+			const count = _.countBy(_.flatMap(feedback, 'status'));
+
+			const roadmapCountObject: RoadmapCount = {
+				planned: count.planned ? count.planned : 0,
+				inprogress: count.inprogress ? count.inprogress : 0,
+				live: count.live ? count.live : 0,
+			};
+
+			if (suggestionsCount !== count.suggestion) {
+				setSuggestionsCount(count.suggestion ? count.suggestion : 0);
+			}
+			if (roadmapCount !== roadmapCountObject) {
+				setRoadmapCount(roadmapCountObject);
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [feedback]);
+
+	useEffect(() => {
+		if (feedback) {
+			const suggestions = feedback.filter(entry => entry.status === 'suggestion');
+			filter !== 'all'
+				? setSuggestions(suggestions.filter(entry => entry.category === filter))
+				: setSuggestions(suggestions);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [filter]);
+
+	if (isLoading || isIdle) {
 		return <p>Fetching feedback...</p>;
 	}
 
-	const count = _.countBy(_.flatMap(feedback, 'status'));
-	const roadmapCount: RoadmapCount = {
-		planned: count.planned,
-		inprogress: count.inprogress,
-		live: count.live,
+	if (isError) {
+		return <p>{error.message}</p>;
+	}
+
+	const updateFilter = (category: string) => {
+		window.scrollTo(0, 0);
+		if (category === 'all') {
+			return setFilter(category);
+		}
+		if (!isCategory(category)) {
+			return console.error('Wrong category');
+		}
+		const categoryValue = findCategoryValue(category);
+		if (!categoryValue) {
+			return console.error('Missing category value');
+		}
+		setFilter(categoryValue);
 	};
 
 	return (
 		<FeedbackPageContainer>
-			<Board roadmapCount={roadmapCount} />
+			<Board roadmapCount={roadmapCount} updateFilter={updateFilter} filter={filter} />
 			<FeedbackList>
-				<div className="list">
-					{feedback.map((entry: Entry) => (
-						<FeedbackEntry entry={entry} key={entry.id} />
-					))}
-				</div>
+				<FeedbackListHeader>
+					<div className="left">
+						<MediaQuery minWidth={breakpoints.tablet}>
+							<h2>
+								<IconSuggestions />
+								{suggestionsCount} Suggestions
+							</h2>
+						</MediaQuery>
+						<div className="sortBy">
+							<p>Sort by:</p>
+						</div>
+					</div>
+					<ButtonPrimary>
+						<IconPlus />
+						Add Feedback
+					</ButtonPrimary>
+				</FeedbackListHeader>
+				{suggestions ? (
+					<div className="entries">
+						{suggestions.map((entry: Entry) => (
+							<FeedbackEntry entry={entry} key={entry.id} updateFilter={updateFilter} />
+						))}
+					</div>
+				) : (
+					<p>No feedback</p>
+				)}
 			</FeedbackList>
 		</FeedbackPageContainer>
 	);

@@ -1,4 +1,4 @@
-import { Category } from '../../../types';
+import { Category, Filter } from '../../../types';
 
 import { styled } from 'styled-components';
 
@@ -12,12 +12,33 @@ const Categories = styled(Bracket)`
 	}
 `;
 
-const CategoriesBoard = () => {
+const CategoriesBoard = ({
+	filter,
+	updateFilter,
+}: {
+	filter: Filter;
+	updateFilter: (category: string) => void;
+}) => {
 	return (
 		<Categories>
-			<ButtonCategory>All</ButtonCategory>
-			{Object.keys(Category).map(category => {
-				return <ButtonCategory key={category}>{category}</ButtonCategory>;
+			<ButtonCategory
+				className={filter === 'all' ? 'active' : ''}
+				onClick={() => {
+					updateFilter('all');
+				}}>
+				All
+			</ButtonCategory>
+			{Object.entries(Category).map(category => {
+				return (
+					<ButtonCategory
+						key={category[1]}
+						className={filter === category[1] ? 'active' : ''}
+						onClick={() => {
+							updateFilter(category[0]);
+						}}>
+						{category[0]}
+					</ButtonCategory>
+				);
 			})}
 		</Categories>
 	);
