@@ -21,7 +21,8 @@ import breakpoints from '../../utils/breakpoints';
 import { ButtonPrimary } from '../Buttons';
 
 import IconSuggestions from '../../assets/suggestions/icon-suggestions.svg?react';
-import IconPlus from '../../assets//shared/icon-plus.svg?react';
+import IllustrationEmpty from '../../assets/suggestions/illustration-empty.svg?react';
+import IconPlus from '../../assets/shared/icon-plus.svg?react';
 
 const FeedbackPageContainer = styled.div`
 	width: 100vw;
@@ -54,10 +55,14 @@ const FeedbackList = styled.div`
 			padding: 0;
 		}
 	}
+	.empty {
+		display: flex;
+		align-self: center;
+	}
 `;
 
 const FeedbackListHeader = styled.div`
-	padding: 1em 1em;
+	padding: 0.5em 1em;
 	display: flex;
 	justify-content: space-between;
 	background-color: ${({ theme }) => theme.headerBackground};
@@ -92,14 +97,13 @@ const FeedbackListPage = () => {
 		isError,
 		error,
 	} = useQuery<Entry[], Error>('feedback', feedbackService.getAll);
-	const [suggestions, setSuggestions] = useState<Entry[]>();
+	const [suggestions, setSuggestions] = useState<Entry[]>([]);
 	const [filter, setFilter] = useState<Filter>('all');
 	const [roadmapCount, setRoadmapCount] = useState<RoadmapCount>({
 		planned: 0,
 		inprogress: 0,
 		live: 0,
 	});
-	const [suggestionsCount, setSuggestionsCount] = useState<number>(0);
 
 	useEffect(() => {
 		if (feedback) {
@@ -116,9 +120,6 @@ const FeedbackListPage = () => {
 				live: count.live ? count.live : 0,
 			};
 
-			if (suggestionsCount !== count.suggestion) {
-				setSuggestionsCount(count.suggestion ? count.suggestion : 0);
-			}
 			if (roadmapCount !== roadmapCountObject) {
 				setRoadmapCount(roadmapCountObject);
 			}
@@ -168,7 +169,7 @@ const FeedbackListPage = () => {
 						<MediaQuery minWidth={breakpoints.tablet}>
 							<h2>
 								<IconSuggestions />
-								{suggestionsCount} Suggestions
+								{suggestions ? suggestions.length : 0} Suggestions
 							</h2>
 						</MediaQuery>
 						<div className="sortBy">
@@ -180,14 +181,14 @@ const FeedbackListPage = () => {
 						Add Feedback
 					</ButtonPrimary>
 				</FeedbackListHeader>
-				{suggestions ? (
+				{suggestions.length !== 0 ? (
 					<div className="entries">
 						{suggestions.map((entry: Entry) => (
 							<FeedbackEntry entry={entry} key={entry.id} updateFilter={updateFilter} />
 						))}
 					</div>
 				) : (
-					<p>No feedback</p>
+					<IllustrationEmpty className="empty" />
 				)}
 			</FeedbackList>
 		</FeedbackPageContainer>
