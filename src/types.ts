@@ -50,3 +50,8 @@ export type RoadmapCount = {
 	inprogress: number;
 	live: number;
 };
+
+export type sortBy = {
+	label: string;
+	value: [string, 'asc' | 'desc'];
+};

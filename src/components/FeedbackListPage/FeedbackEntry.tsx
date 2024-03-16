@@ -13,7 +13,6 @@ const FeedbackSingle = styled.div`
 	.content {
 		width: 100%;
 		display: flex;
-		order: 1;
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 1em;
@@ -25,7 +24,6 @@ const FeedbackSingle = styled.div`
 		padding: 0.5em 1em;
 		overflow: hidden;
 		display: flex;
-		order: 2;
 		align-self: flex-start;
 		justify-content: center;
 		align-items: center;
@@ -42,6 +40,7 @@ const FeedbackSingle = styled.div`
 			width: 40px;
 			padding: 0.5em;
 			flex-direction: column;
+			order: 1;
 			gap: 0.25em;
 			svg {
 				margin-top: 0.5em;
@@ -50,7 +49,6 @@ const FeedbackSingle = styled.div`
 	}
 	.comments {
 		display: flex;
-		order: 3;
 		align-self: center;
 		align-items: center;
 		gap: 0.75em;
@@ -59,6 +57,9 @@ const FeedbackSingle = styled.div`
 		font-weight: 600;
 		&.noComments {
 			opacity: 0.7;
+		}
+		@media (min-width: ${breakpoints.tablet}) {
+			order: 3;
 		}
 	}
 	display: flex;
@@ -76,6 +77,7 @@ const FeedbackSingle = styled.div`
 	}
 	@media (min-width: ${breakpoints.tablet}) {
 		flex-wrap: nowrap;
+		gap: 2em;
 	}
 `;
 
@@ -90,10 +92,6 @@ const FeedbackEntry = ({
 
 	return (
 		<FeedbackSingle>
-			<div className="votes">
-				<IconArrowUp />
-				{entry.upvotes}
-			</div>
 			<div className="content">
 				<h3>{entry.title}</h3>
 				<p>{entry.description}</p>
@@ -102,6 +100,10 @@ const FeedbackEntry = ({
 				) : (
 					<ButtonCategory>Undefined</ButtonCategory>
 				)}
+			</div>
+			<div className="votes">
+				<IconArrowUp />
+				{entry.upvotes}
 			</div>
 			<div className={entry.comments > 0 ? 'comments' : 'comments noComments'}>
 				<IconComments />

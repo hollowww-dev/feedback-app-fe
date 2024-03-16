@@ -1,4 +1,4 @@
-import { Entry, RoadmapCount, Filter } from '../../types';
+import { Entry, RoadmapCount, Filter, sortBy } from '../../types';
 
 import { isCategory, findCategoryValue } from '../../utils/utils';
 
@@ -81,9 +81,24 @@ const FeedbackListHeader = styled.div`
 		.sortBy {
 			display: flex;
 			align-items: center;
+			gap: 0.5em;
+			select {
+				background: none;
+				border: none;
+				color: inherit;
+				font-family: inherit;
+				font-weight: 600;
+			}
 		}
 	}
 `;
+
+const sortByOptions: sortBy[] = [
+	{ label: 'Most Upvotes', value: ['upvotes', 'desc'] },
+	{ label: 'Least Upvotes', value: ['upvotes', 'asc'] },
+	{ label: 'Most Comments', value: ['comments', 'desc'] },
+	{ label: 'Least Comments', value: ['comments', 'asc'] },
+];
 
 const FeedbackListPage = () => {
 	const {
@@ -100,6 +115,7 @@ const FeedbackListPage = () => {
 		inprogress: 0,
 		live: 0,
 	});
+	const [sortBy, setSortBy] = useState<sortBy['value']>(['upvotes', 'desc']);
 
 	useEffect(() => {
 		if (feedback) {
@@ -156,6 +172,13 @@ const FeedbackListPage = () => {
 		setFilter(categoryValue);
 	};
 
+	const updateSortBy = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const value = e.target.value.split(',');
+		if (typeof value[0] === 'string' && (value[1] === 'asc' || value[1] === 'desc')) {
+			setSortBy([value[0], value[1]]);
+		}
+	};
+
 	return (
 		<FeedbackPageContainer>
 			<Board roadmapCount={roadmapCount} updateFilter={updateFilter} filter={filter} />
@@ -169,7 +192,14 @@ const FeedbackListPage = () => {
 							</h2>
 						</MediaQuery>
 						<div className="sortBy">
-							<p>Sort by:</p>
+							<p>Sort by : </p>
+							<select onChange={updateSortBy}>
+								{sortByOptions.map(option => (
+									<option value={option.value} key={option.label}>
+										{option.label}
+									</option>
+								))}
+							</select>
 						</div>
 					</div>
 					<ButtonPrimary>
@@ -179,7 +209,7 @@ const FeedbackListPage = () => {
 				</FeedbackListHeader>
 				<div className="entries">
 					{suggestions.length !== 0 ? (
-						suggestions.map((entry: Entry) => (
+						_.orderBy(suggestions, sortBy[0], sortBy[1]).map((entry: Entry) => (
 							<FeedbackEntry entry={entry} key={entry.id} updateFilter={updateFilter} />
 						))
 					) : (
