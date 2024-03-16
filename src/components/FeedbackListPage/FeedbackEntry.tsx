@@ -23,6 +23,7 @@ const FeedbackSingle = styled.div`
 	}
 	.votes {
 		padding: 0.5em 1em;
+		overflow: hidden;
 		display: flex;
 		order: 2;
 		align-self: flex-start;
@@ -57,7 +58,7 @@ const FeedbackSingle = styled.div`
 		color: ${({ theme }) => theme.headline};
 		font-weight: 600;
 		&.noComments {
-			opacity: 0.75;
+			opacity: 0.7;
 		}
 	}
 	display: flex;
