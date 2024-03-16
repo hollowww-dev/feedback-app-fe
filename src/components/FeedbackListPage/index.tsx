@@ -12,6 +12,7 @@ import _ from 'lodash';
 
 import Board from './Board';
 import FeedbackEntry from './FeedbackEntry';
+import NoFeedback from './NoFeedback';
 
 import { styled } from 'styled-components';
 
@@ -21,7 +22,6 @@ import breakpoints from '../../utils/breakpoints';
 import { ButtonPrimary } from '../Buttons';
 
 import IconSuggestions from '../../assets/suggestions/icon-suggestions.svg?react';
-import IllustrationEmpty from '../../assets/suggestions/illustration-empty.svg?react';
 import IconPlus from '../../assets/shared/icon-plus.svg?react';
 
 const FeedbackPageContainer = styled.div`
@@ -54,10 +54,6 @@ const FeedbackList = styled.div`
 		@media (min-width: ${breakpoints.tablet}) {
 			padding: 0;
 		}
-	}
-	.empty {
-		display: flex;
-		align-self: center;
 	}
 `;
 
@@ -181,15 +177,15 @@ const FeedbackListPage = () => {
 						Add Feedback
 					</ButtonPrimary>
 				</FeedbackListHeader>
-				{suggestions.length !== 0 ? (
-					<div className="entries">
-						{suggestions.map((entry: Entry) => (
+				<div className="entries">
+					{suggestions.length !== 0 ? (
+						suggestions.map((entry: Entry) => (
 							<FeedbackEntry entry={entry} key={entry.id} updateFilter={updateFilter} />
-						))}
-					</div>
-				) : (
-					<IllustrationEmpty className="empty" />
-				)}
+						))
+					) : (
+						<NoFeedback />
+					)}
+				</div>
 			</FeedbackList>
 		</FeedbackPageContainer>
 	);

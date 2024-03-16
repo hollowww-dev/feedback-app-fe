@@ -38,6 +38,16 @@ export interface Entry {
 	upvotes: number;
 	status: Status;
 	description: string;
+	comments: number;
+}
+
+export interface EntryDetailed {
+	id: number;
+	title: string;
+	category: Category;
+	upvotes: number;
+	status: Status;
+	description: string;
 	comments?: Comment[];
 }
 
