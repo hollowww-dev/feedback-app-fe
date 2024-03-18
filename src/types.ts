@@ -14,7 +14,7 @@ export enum Status {
 }
 
 export interface Entry {
-	id: number;
+	id: string;
 	title: string;
 	category: Category;
 	upvotes: number;
@@ -35,7 +35,7 @@ export type Reply = {
 };
 
 export type Comment = {
-	id: number;
+	id: string;
 	content: string;
 	user: User;
 	replies?: Reply[];

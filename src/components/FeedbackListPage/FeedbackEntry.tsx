@@ -21,7 +21,7 @@ const FeedbackSingle = styled.div`
 		}
 	}
 	.votes {
-		padding: 0.5em 1em;
+		padding: 0.4em 1em;
 		overflow: hidden;
 		display: flex;
 		align-self: flex-start;
@@ -48,7 +48,7 @@ const FeedbackSingle = styled.div`
 		}
 		@media (min-width: ${breakpoints.tablet}) {
 			width: 40px;
-			padding: 0.5em;
+			padding: 0.4em;
 			flex-direction: column;
 			order: 1;
 			gap: 0.25em;
