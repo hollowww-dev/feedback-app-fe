@@ -18,7 +18,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     background-color: ${({ theme }) => theme.bodyBackground};
     color: ${({ theme }) => theme.paragraph};
     font-family: "Jost", sans-serif;

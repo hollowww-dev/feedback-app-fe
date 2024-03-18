@@ -51,7 +51,7 @@ export type RoadmapCount = {
 	live: number;
 };
 
-export type sortBy = {
+export type SortBy = {
 	label: string;
 	value: [string, 'asc' | 'desc'];
 };

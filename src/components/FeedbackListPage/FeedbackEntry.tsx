@@ -33,8 +33,18 @@ const FeedbackSingle = styled.div`
 		font-weight: 600;
 		color: ${({ theme }) => theme.headline};
 		background-color: ${({ theme }) => theme.bodyBackground};
+		svg {
+			color: ${({ theme }) => theme.secondary};
+		}
 		&:hover {
 			background-color: ${({ theme }) => theme.hoverBackground};
+		}
+		&.active {
+			background-color: ${({ theme }) => theme.secondary};
+			color: ${({ theme }) => theme.white};
+			svg {
+				color: ${({ theme }) => theme.white};
+			}
 		}
 		@media (min-width: ${breakpoints.tablet}) {
 			width: 40px;

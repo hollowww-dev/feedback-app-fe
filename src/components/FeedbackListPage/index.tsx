@@ -1,4 +1,4 @@
-import { Entry, RoadmapCount, Filter, sortBy } from '../../types';
+import { Entry, RoadmapCount, Filter, SortBy } from '../../types';
 
 import { isCategory, findCategoryValue } from '../../utils/utils';
 
@@ -88,12 +88,21 @@ const FeedbackListHeader = styled.div`
 				color: inherit;
 				font-family: inherit;
 				font-weight: 600;
+				option {
+					color: ${({ theme }) => theme.paragraph};
+					background-color: ${({ theme }) => theme.white};
+					&:checked,
+					&:active {
+						color: ${({ theme }) => theme.primary};
+						background-color: black;
+					}
+				}
 			}
 		}
 	}
 `;
 
-const sortByOptions: sortBy[] = [
+const sortByOptions: SortBy[] = [
 	{ label: 'Most Upvotes', value: ['upvotes', 'desc'] },
 	{ label: 'Least Upvotes', value: ['upvotes', 'asc'] },
 	{ label: 'Most Comments', value: ['comments', 'desc'] },
@@ -110,12 +119,12 @@ const FeedbackListPage = () => {
 	} = useQuery<Entry[], Error>('feedback', feedbackService.getAll);
 	const [suggestions, setSuggestions] = useState<Entry[]>([]);
 	const [filter, setFilter] = useState<Filter>('all');
+	const [sortBy, setSortBy] = useState<SortBy['value']>(['upvotes', 'desc']);
 	const [roadmapCount, setRoadmapCount] = useState<RoadmapCount>({
 		planned: 0,
 		inprogress: 0,
 		live: 0,
 	});
-	const [sortBy, setSortBy] = useState<sortBy['value']>(['upvotes', 'desc']);
 
 	useEffect(() => {
 		if (feedback) {
@@ -192,8 +201,8 @@ const FeedbackListPage = () => {
 							</h2>
 						</MediaQuery>
 						<div className="sortBy">
-							<p>Sort by : </p>
-							<select onChange={updateSortBy}>
+							<p>Sort by: </p>
+							<select onChange={updateSortBy} value={sortBy}>
 								{sortByOptions.map(option => (
 									<option value={option.value} key={option.label}>
 										{option.label}
