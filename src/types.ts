@@ -55,3 +55,8 @@ export type SortBy = {
 	label: string;
 	value: [string, 'asc' | 'desc'];
 };
+
+export type Credentials = {
+	username: string;
+	password: string;
+};

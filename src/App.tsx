@@ -7,6 +7,7 @@ import { GlobalStyles } from './globalStyles';
 import { theme } from './theme';
 
 import FeedbackListPage from './components/FeedbackListPage';
+import LoginPage from './components/LoginPage';
 
 const App = () => {
 	return (
@@ -15,6 +16,7 @@ const App = () => {
 				<GlobalStyles />
 				<Routes>
 					<Route path="/" element={<FeedbackListPage />} />
+					<Route path="/login" element={<LoginPage />} />
 					<Route path="*" element={<Navigate to="/" />} />
 				</Routes>
 			</ThemeProvider>

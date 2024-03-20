@@ -65,9 +65,6 @@ const FeedbackSingle = styled.div`
 		padding: 0.5em 1em;
 		color: ${({ theme }) => theme.headline};
 		font-weight: 600;
-		&.noComments {
-			opacity: 0.7;
-		}
 		@media (min-width: ${breakpoints.tablet}) {
 			order: 3;
 		}
@@ -115,7 +112,7 @@ const FeedbackEntry = ({
 				<IconArrowUp />
 				{entry.upvotes}
 			</div>
-			<div className={entry.comments > 0 ? 'comments' : 'comments noComments'}>
+			<div className='comments'>
 				<IconComments />
 				{entry.comments}
 			</div>
