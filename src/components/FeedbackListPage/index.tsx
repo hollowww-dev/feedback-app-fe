@@ -202,7 +202,7 @@ const FeedbackListPage = () => {
 						</MediaQuery>
 						<div className="sortBy">
 							<p>Sort by: </p>
-							<select onChange={updateSortBy} value={sortBy}>
+							<select onChange={updateSortBy}>
 								{sortByOptions.map(option => (
 									<option value={option.value} key={option.label}>
 										{option.label}

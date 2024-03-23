@@ -8,6 +8,9 @@ import breakpoints from '../../../utils/breakpoints';
 import IconHamburger from '../../../assets/shared/mobile/icon-hamburger.svg?react';
 import IconClose from '../../../assets/shared/mobile/icon-close.svg?react';
 
+import { useLoggedUser } from '../../../context/loginHooks';
+import { Link } from 'react-router-dom';
+
 const TitleBoardStyled = styled.div`
 	padding: 1em 1em;
 	width: 100vw;
@@ -38,6 +41,9 @@ const TitleBoardStyled = styled.div`
 			opacity: 0.75;
 			text-shadow: ${({ theme }) => theme.paragraph} 2px 2.5px 5px;
 		}
+		a {
+			color: ${({ theme }) => theme.white};
+		}
 	}
 	svg {
 		cursor: pointer;
@@ -64,12 +70,23 @@ const TitleBoardStyled = styled.div`
 
 const TitleBoard = ({ children }: { children?: string | JSX.Element | JSX.Element[] }) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const user = useLoggedUser();
+
 	return (
 		<>
 			<TitleBoardStyled>
 				<div className="title">
 					<h2>Frontend Mentor</h2>
-					<p>Feedback board</p>
+					<p>
+						Hello{' '}
+						{user ? (
+							`${user.name}!`
+						) : (
+							<>
+								stranger! - <Link to="/login">Login</Link>
+							</>
+						)}
+					</p>
 				</div>
 				<MediaQuery maxWidth={breakpoints.mobile}>
 					{isOpen ? (

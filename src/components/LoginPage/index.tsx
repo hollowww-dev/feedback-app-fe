@@ -6,6 +6,9 @@ import { styled } from 'styled-components';
 
 import loginService from '../../services/loginService';
 
+import { useLogin } from '../../context/loginHooks';
+import { useNavigate } from 'react-router';
+
 const LoginContainer = styled.div`
 	margin: 1em;
 	padding: 1em;
@@ -28,6 +31,10 @@ const LoginPage = () => {
 	const [username, setUsername] = useState<Credentials['username']>('');
 	const [password, setPassword] = useState<Credentials['password']>('');
 
+	const navigate = useNavigate();
+
+	const saveLogin = useLogin();
+
 	const login = async (e: SyntheticEvent) => {
 		e.preventDefault();
 
@@ -36,10 +43,11 @@ const LoginPage = () => {
 			password: password,
 		};
 
-		const token = await loginService.authenticate(credentials);
+		const response = await loginService.authenticate(credentials);
 
-		const user = await loginService.getUser(token);
-		console.log(user);
+		saveLogin(response);
+
+		navigate('/');
 	};
 
 	return (

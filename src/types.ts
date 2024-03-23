@@ -1,3 +1,5 @@
+import { Dispatch } from 'react';
+
 export enum Category {
 	'UI' = 'ui',
 	'UX' = 'ux',
@@ -23,21 +25,47 @@ export interface Entry {
 	comments: number;
 }
 
+export type Credentials = {
+	username: string;
+	password: string;
+};
+
+export type LoginContextValue = {
+	token: string;
+	user?: {
+		username: string;
+		name: string;
+		upvoted: string[];
+	};
+};
+
+export type LoginContextAction = { type: 'SET'; payload: LoginContextValue } | { type: 'CLEAR' };
+
+export type LoginContextType = {
+	state: LoginContextValue | null;
+	dispatch: Dispatch<LoginContextAction>;
+};
+
 export type User = {
 	name: string;
 	username: string;
+	passwordHash: string;
+	upvoted: string[];
 };
+
+export type Author = Omit<User, 'passwordHash' | 'upvoted'>;
+export type LoggedUser = Omit<User, 'passwordHash'>;
 
 export type Reply = {
 	content: string;
 	replyingTo: string;
-	user: User;
+	user: Author;
 };
 
 export type Comment = {
 	id: string;
 	content: string;
-	user: User;
+	user: Author;
 	replies?: Reply[];
 };
 
@@ -54,9 +82,4 @@ export type RoadmapCount = {
 export type SortBy = {
 	label: string;
 	value: [string, 'asc' | 'desc'];
-};
-
-export type Credentials = {
-	username: string;
-	password: string;
 };
