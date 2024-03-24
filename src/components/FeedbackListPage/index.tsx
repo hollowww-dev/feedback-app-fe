@@ -91,11 +91,6 @@ const FeedbackListHeader = styled.div`
 				option {
 					color: ${({ theme }) => theme.paragraph};
 					background-color: ${({ theme }) => theme.white};
-					&:checked,
-					&:active {
-						color: ${({ theme }) => theme.primary};
-						background-color: black;
-					}
 				}
 			}
 		}
