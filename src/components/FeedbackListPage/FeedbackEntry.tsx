@@ -90,13 +90,14 @@ const FeedbackSingle = styled.div`
 
 const FeedbackEntry = ({
 	entry,
+	voted,
 	updateFilter,
 }: {
 	entry: Entry;
+	voted: boolean;
 	updateFilter: (category: string) => void;
 }) => {
 	const categoryKey = findCategoryKey(entry.category);
-
 	return (
 		<FeedbackSingle>
 			<div className="content">
@@ -108,11 +109,11 @@ const FeedbackEntry = ({
 					<ButtonCategory>Undefined</ButtonCategory>
 				)}
 			</div>
-			<div className="votes">
+			<div className={voted ? 'votes active' : 'votes'}>
 				<IconArrowUp />
 				{entry.upvotes}
 			</div>
-			<div className='comments'>
+			<div className="comments">
 				<IconComments />
 				{entry.comments}
 			</div>

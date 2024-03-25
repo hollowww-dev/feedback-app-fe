@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react';
 
 import { useQuery } from 'react-query';
 
+import { useLoggedUser } from '../../context/loginHooks';
+
 import feedbackService from '../../services/feedbackService';
 
 import _ from 'lodash';
@@ -153,6 +155,8 @@ const FeedbackListPage = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filter]);
 
+	const user = useLoggedUser();
+
 	if (isLoading || isIdle) {
 		return <p>Fetching feedback...</p>;
 	}
@@ -214,7 +218,12 @@ const FeedbackListPage = () => {
 				<div className="entries">
 					{suggestions.length !== 0 ? (
 						_.orderBy(suggestions, sortBy[0], sortBy[1]).map((entry: Entry) => (
-							<FeedbackEntry entry={entry} key={entry.id} updateFilter={updateFilter} />
+							<FeedbackEntry
+								entry={entry}
+								key={entry.id}
+								updateFilter={updateFilter}
+								voted={user?.upvoted.includes(entry.id) || false}
+							/>
 						))
 					) : (
 						<NoFeedback />
