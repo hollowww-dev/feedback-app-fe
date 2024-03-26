@@ -1,4 +1,4 @@
-import { Entry } from '../../types';
+import { Entry, LoggedUser } from '../../types';
 
 import { styled } from 'styled-components';
 
@@ -8,6 +8,9 @@ import { findCategoryKey } from '../../utils/utils';
 import IconArrowUp from '../../assets/shared/icon-arrow-up.svg?react';
 import IconComments from '../../assets/shared/icon-comments.svg?react';
 import breakpoints from '../../utils/breakpoints';
+import { useMutation, useQueryClient } from 'react-query';
+import { useToken } from '../../context/loginHooks';
+import feedbackService from '../../services/feedbackService';
 
 const FeedbackSingle = styled.div`
 	.content {
@@ -90,15 +93,41 @@ const FeedbackSingle = styled.div`
 
 const FeedbackEntry = ({
 	entry,
-	vote,
 	voted,
 	updateFilter,
 }: {
 	entry: Entry;
-	vote: (id: string) => void;
 	voted: boolean;
 	updateFilter: (category: string) => void;
 }) => {
+	const token = useToken();
+
+	const queryClient = useQueryClient();
+	const voteMutation = useMutation(
+		({ id, token }: { id: string; token: string }) => feedbackService.vote(id, token),
+		{
+			onSuccess: (response: { entry: Entry; user: LoggedUser }) => {
+				const feedback = queryClient.getQueryData<Entry[]>(['feedback']);
+				queryClient.setQueryData(
+					['feedback'],
+					feedback
+						? feedback.map(entry => (entry.id !== response.entry.id ? entry : response.entry))
+						: [response.entry]
+				);
+				console.log(response.user);
+			},
+			onError: (error: unknown) => {
+				console.log(error);
+			},
+		}
+	);
+
+	const vote = (id: string) => {
+		if (!token) {
+			return console.log('No token...');
+		}
+		voteMutation.mutate({ id, token });
+	};
 	const categoryKey = findCategoryKey(entry.category);
 	return (
 		<FeedbackSingle>

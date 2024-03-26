@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { LoginContextValue, LoginContextType } from '../types';
 import LoginContext from './loginContext';
-import { isString } from 'lodash';
 
 export const useLoggedUser = (): LoginContextValue['user'] => {
 	const fullContext: LoginContextType = useContext(LoginContext);
@@ -14,11 +13,7 @@ export const useToken = (): LoginContextValue['token'] | undefined => {
 	const fullContext: LoginContextType = useContext(LoginContext);
 	const state = fullContext.state;
 
-	if (!state || !isString(state.token)) {
-		return undefined;
-	}
-
-	return state.token;
+	return state?.token;
 };
 
 export const useLogin = () => {
