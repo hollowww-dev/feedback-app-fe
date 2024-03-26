@@ -5,7 +5,11 @@ import config from '../utils/config';
 import { Credentials, LoggedUser } from '../types';
 
 const authenticate = async (object: Credentials) => {
-	const { data } = await axios.post<LoggedUser & {token: string}>(`${config.baseUrl}/login`, object);
+	const { data } = await axios<LoggedUser & { token: string }>({
+		method: 'post',
+		url: `${config.baseUrl}/login`,
+		data: object,
+	});
 	return data;
 };
 

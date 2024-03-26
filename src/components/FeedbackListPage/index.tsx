@@ -4,9 +4,9 @@ import { isCategory, findCategoryValue } from '../../utils/utils';
 
 import { useState, useEffect } from 'react';
 
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { useLoggedUser } from '../../context/loginHooks';
+import { useLoggedUser, useToken } from '../../context/loginHooks';
 
 import feedbackService from '../../services/feedbackService';
 
@@ -107,6 +107,8 @@ const sortByOptions: SortBy[] = [
 ];
 
 const FeedbackListPage = () => {
+	const queryClient = useQueryClient();
+
 	const {
 		data: feedback,
 		isLoading,
@@ -156,6 +158,33 @@ const FeedbackListPage = () => {
 	}, [filter]);
 
 	const user = useLoggedUser();
+	const token = useToken();
+
+	const voteMutation = useMutation(
+		({ id, token }: { id: string; token: string }) => feedbackService.vote(id, token),
+		{
+			onSuccess: (votedEntry: Entry) => {
+				if (feedback) {
+					queryClient.setQueryData(
+						['feedback'],
+						feedback.map(entry => (entry.id === votedEntry.id ? votedEntry : entry))
+					);
+				} else {
+					queryClient.refetchQueries(['feedback']);
+				}
+			},
+			onError: (error: unknown) => {
+				console.log(error);
+			},
+		}
+	);
+
+	const voteFunction = (id: string) => {
+		if (!token) {
+			return console.log('No token...');
+		}
+		voteMutation.mutate({ id, token });
+	};
 
 	if (isLoading || isIdle) {
 		return <p>Fetching feedback...</p>;
@@ -223,6 +252,7 @@ const FeedbackListPage = () => {
 								key={entry.id}
 								updateFilter={updateFilter}
 								voted={user?.upvoted.includes(entry.id) || false}
+								vote={voteFunction}
 							/>
 						))
 					) : (

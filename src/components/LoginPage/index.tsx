@@ -8,18 +8,21 @@ import loginService from '../../services/loginService';
 
 import { useLogin } from '../../context/loginHooks';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
+
+import { isAxiosError } from 'axios';
 
 const LoginContainer = styled.div`
-	margin: 1em;
-	padding: 1em;
-	display: inline-flex;
+	display: flex;
 	flex-direction: column;
-	justify-self: center;
-	border-radius: 10px;
-	background-color: ${({ theme }) => theme.white};
+	align-items: center;
+	gap: 1em;
 	form {
-		display: flex;
+		padding: 1em;
+		display: inline-flex;
 		flex-direction: column;
+		border-radius: 10px;
+		background-color: ${({ theme }) => theme.white};
 		gap: 0.25em;
 		label {
 			display: flex;
@@ -50,8 +53,8 @@ const LoginPage = () => {
 		e.preventDefault();
 
 		const credentials: Credentials = {
-			username: username,
-			password: password,
+			username,
+			password,
 		};
 
 		try {
@@ -60,42 +63,48 @@ const LoginPage = () => {
 			saveLogin(response);
 
 			navigate('/');
-		} catch (error: unknown) {
-			let errorMessage = 'Something went wrong.';
-			if (error instanceof Error) {
-				errorMessage += ' Error: ' + error.message;
+		} catch (e: unknown) {
+			if (isAxiosError(e)) {
+				if (e?.response?.data && typeof e?.response?.data === 'string') {
+					const message = e.response.data.replace('Something went wrong. Error: ', '');
+					console.error(message);
+					setError(message);
+				} else {
+					setError('Unrecognized axios error');
+				}
+			} else {
+				console.error('Unknown error', e);
+				setError('Unknown error');
 			}
-			setError(errorMessage);
 		}
 	};
 
 	return (
-		<>
+		<LoginContainer>
 			{error && <ErrorMessage>{error}</ErrorMessage>}
-			<LoginContainer>
-				<form onSubmit={login}>
-					<label htmlFor="username">
-						Username:
-						<input
-							type="text"
-							name="username"
-							value={username}
-							onChange={e => setUsername(e.target.value)}
-						/>
-					</label>
-					<label htmlFor="password">
-						Password:
-						<input
-							type="password"
-							name="password"
-							value={password}
-							onChange={e => setPassword(e.target.value)}
-						/>
-					</label>
-					<input type="submit" value="Login" />
-				</form>
-			</LoginContainer>
-		</>
+			<form onSubmit={login}>
+				<label htmlFor="username">
+					Username:
+					<input
+						type="text"
+						name="username"
+						value={username}
+						onChange={e => setUsername(e.target.value)}
+					/>
+				</label>
+				<label htmlFor="password">
+					Password:
+					<input
+						type="password"
+						name="password"
+						value={password}
+						onChange={e => setPassword(e.target.value)}
+					/>
+				</label>
+				<input type="submit" value="Login" />
+			</form>
+			<Link to="/">Back to home</Link>
+		</LoginContainer>
 	);
 };
 

@@ -10,12 +10,12 @@ export const useLoggedUser = (): LoginContextValue['user'] => {
 	return state?.user;
 };
 
-export const useToken = (): LoginContextValue['token'] => {
+export const useToken = (): LoginContextValue['token'] | undefined => {
 	const fullContext: LoginContextType = useContext(LoginContext);
 	const state = fullContext.state;
 
 	if (!state || !isString(state.token)) {
-		throw new Error('Incorrect or missing token');
+		return undefined;
 	}
 
 	return state.token;

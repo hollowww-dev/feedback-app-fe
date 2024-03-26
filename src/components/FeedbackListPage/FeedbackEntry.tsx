@@ -90,10 +90,12 @@ const FeedbackSingle = styled.div`
 
 const FeedbackEntry = ({
 	entry,
+	vote,
 	voted,
 	updateFilter,
 }: {
 	entry: Entry;
+	vote: (id: string) => void;
 	voted: boolean;
 	updateFilter: (category: string) => void;
 }) => {
@@ -109,7 +111,7 @@ const FeedbackEntry = ({
 					<ButtonCategory>Undefined</ButtonCategory>
 				)}
 			</div>
-			<div className={voted ? 'votes active' : 'votes'}>
+			<div className={voted ? 'votes active' : 'votes'} onClick={() => vote(entry.id)}>
 				<IconArrowUp />
 				{entry.upvotes}
 			</div>
