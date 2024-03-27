@@ -32,15 +32,13 @@ export type Credentials = {
 
 export type LoginContextValue = {
 	token: string;
-	user?: {
-		username: string;
-		name: string;
-		upvoted: string[];
-	};
+	user?: LoggedUser;
 };
 
-export type LoginContextAction = { type: 'SET'; payload: LoginContextValue } | { type: 'CLEAR' };
-
+export type LoginContextAction =
+	| { type: 'SET'; payload: LoginContextValue }
+	| { type: 'CLEAR' }
+	| { type: 'UPDATE'; payload: Omit<LoginContextValue, 'token'> & { token?: string } };
 export type LoginContextType = {
 	state: LoginContextValue | null;
 	dispatch: Dispatch<LoginContextAction>;

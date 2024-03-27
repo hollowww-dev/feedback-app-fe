@@ -9,7 +9,7 @@ import IconArrowUp from '../../assets/shared/icon-arrow-up.svg?react';
 import IconComments from '../../assets/shared/icon-comments.svg?react';
 import breakpoints from '../../utils/breakpoints';
 import { useMutation, useQueryClient } from 'react-query';
-import { useToken } from '../../context/loginHooks';
+import { useToken, useUpdate } from '../../context/loginHooks';
 import feedbackService from '../../services/feedbackService';
 
 const FeedbackSingle = styled.div`
@@ -101,6 +101,7 @@ const FeedbackEntry = ({
 	updateFilter: (category: string) => void;
 }) => {
 	const token = useToken();
+	const update = useUpdate();
 
 	const queryClient = useQueryClient();
 	const voteMutation = useMutation(
@@ -114,7 +115,7 @@ const FeedbackEntry = ({
 						? feedback.map(entry => (entry.id !== response.entry.id ? entry : response.entry))
 						: [response.entry]
 				);
-				console.log(response.user);
+				update({ user: response.user });
 			},
 			onError: (error: unknown) => {
 				console.log(error);
